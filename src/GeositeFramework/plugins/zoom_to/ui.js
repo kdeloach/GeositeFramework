@@ -121,39 +121,13 @@ define([],
         var UiInputView = Backbone.View.extend({
 
             className: "pluginZoomTo",    // CSS class for div autocreated by this view
-            
-            // required for ALL click events
-            _cancelEventBubble: function(event) {
-                if (event.stopPropagation) {
-                    event.stopPropagation();
-                } else if (event.cancelBubble) {  // IE8
-                    event.cancelBubble = true;
-                }
-            },
 
             events: {
-                // Because this plugin renders some extra UI features into
-                // the <a> tag used as the plugin icon, click events do not
-                // behave quite as expected. For example, a click event on 
-                // the plugin will try to take focus, but the subsequent
-                // click event that registers on the <a> tag will rerender
-                // the dom elements and lose focus. Therefore, for this plugin
-                // and plugins that behave similarly, ALL click events must
-                // manually stop event propation up to the <a> tag.
-
-                "click #pluginZoomTo-clearSearch": function (e) {
-                    this.clear();
-                    this._cancelEventBubble(e);
-                },
-                "click .pluginZoomTo-tool": function (e) {
+                "click #pluginZoomTo-clearSearch": 'clear',
+                "keypress input": 'handleKeyPress',
+                "click input": function (e) {
                     this.model.set('showingInput', true);
-                    this.$('input').focus();
-                    this._cancelEventBubble(e);
-                },
-                "click": function(e) {
-                    this._cancelEventBubble(e);
-                },
-                "keypress input": function (event) { this.handleKeyPress(event); }
+                }
             },
 
             buildCandidateEvents: function () {
@@ -174,7 +148,6 @@ define([],
                             }));
                         $fragment.click(function(e) {
                             view.centerAndZoom(x, y, candidate.extent);
-                            view._cancelEventBubble(e);
                         });
                         return $fragment;
                     };

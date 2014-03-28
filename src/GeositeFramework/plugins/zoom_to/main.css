@@ -72,9 +72,9 @@
         background-color: #FFF !important;
     }
 
-.pluginZoomTo-tool {
-    position: absolute;
-    width: 34px;
-    height: 34px;
+.pluginZoomTo input {
     cursor: pointer;
+}
+.pluginZoomTo.pluginZoomTo-showing-input input {
+    cursor: auto;
 }
