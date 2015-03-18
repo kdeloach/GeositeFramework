@@ -5,7 +5,7 @@ define(["jquery", "use!underscore", "use!extjs", "./treeFilter"],
     function ($, _, Ext, treeFilter) {
         //$('input, textarea').placeholder(); // initialize jquery.placeholder
 
-        var Ui = function (container, map, templates) {
+        var Ui = function (plugin, container, map, templates) {
             var _map = map,
                 _container = container,
                 _$templates = $('<div>').append($($.trim(templates))), // store templates in a utility div
@@ -34,6 +34,12 @@ define(["jquery", "use!underscore", "use!extjs", "./treeFilter"],
                 _tree.on("checkchange", onCheckboxChanged, this);
                 _tree.on("afteritemexpand", onItemExpanded, this);
                 _tree.on("itemclick", onItemClick, this);
+
+                $('a.pluginLayerSelector-clear', container).click(function() {
+                    plugin.clearAll();
+                    uncheckAndCollapse();
+                });
+
                 removeSpinner();
                 renderUi();
                 _isRendered = true;
@@ -68,7 +74,7 @@ define(["jquery", "use!underscore", "use!extjs", "./treeFilter"],
                 }
             };
 
-            this.uncheckAndCollapse = function () {
+            function uncheckAndCollapse() {
                 _tree.collapseAll();
                 _tree.getRootNode().cascadeBy(function () {
                     if (this.get('checked') === true) {
@@ -170,16 +176,12 @@ define(["jquery", "use!underscore", "use!extjs", "./treeFilter"],
                 }
             }
 
-            renderExtTree = (function () {
-                var renderExtTreeCount = 0;
-                return function () {
-                    if (_tree && $(_container).is(":visible") && renderExtTreeCount === 0) {
-                        setTreeWidthToContainerWidth();
-                        _tree.render(_$treeContainer[0]);
-                        renderExtTreeCount++;
-                    }
-                };
-            }());
+            renderExtTree = once(function() {
+                if (_tree && $(_container).is(":visible")) {
+                    setTreeWidthToContainerWidth();
+                    _tree.render(_$treeContainer[0]);
+                }
+            });
 
             function setTreeWidthToContainerWidth() {
                 _tree.setWidth($(_container).width());
@@ -413,6 +415,17 @@ define(["jquery", "use!underscore", "use!extjs", "./treeFilter"],
 
             addSpinner();
         };
+
+        function once(fn) {
+            var context = this,
+                i = 0;
+            return function() {
+                if (i === 0) {
+                    fn.apply(context, arguments);
+                }
+                i++;
+            };
+        }
 
         return Ui;
     }

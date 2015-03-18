@@ -61,7 +61,9 @@ define([
             initialize: function (frameworkParameters) {
                 declare.safeMixin(this, frameworkParameters);
                 this._layerManager = new LayerManager(this.app);
-                this._ui = new Ui(this.container, this.map, templates);
+                this._ui = new Ui(this, this.container, this.map, templates);
+
+                this._ui.render(tree);
 
                 // Load layer sources, then render UI passing the tree of layer nodes
                 var self = this;
@@ -70,9 +72,6 @@ define([
                         self._layerManager.setServiceState(self._currentState, self.map);
                     }
                     self._ui.render(tree);
-                    $('a.pluginLayerSelector-clear', self.container).click(function() {
-                        self.clearAll();
-                    });
                 });
             },
 

@@ -66,19 +66,18 @@ define([
                         }
 
                         // validate and load, or raise a schema error
-                        if ((dataSourceContainer.agsSource) && !(dataSourceContainer.agsSource && dataSourceContainer.wmsSource)) {
+                        if (dataSourceContainer.agsSource) {
                             if (source.folderTitle === "") {
                                 sourceRootNode = _treeRootNode;
                             } else {
                                 sourceRootNode = makeContainerNode(source.folderTitle, "folder", _treeRootNode, source);
                             }
                             loadLayerSource(loader, source.url, sourceRootNode, innerContainer);
-                        } else if ((dataSourceContainer.wmsSource) && !(dataSourceContainer.agsSource && dataSourceContainer.wmsSource)) {  
+                        } else if (dataSourceContainer.wmsSource) {
                             loadLayerSource(loader, source.url, _treeRootNode, innerContainer);
-                        } else { 
+                        } else {
                             _app.error("Schema error. Must have a single agsSource or wmsSource in each object.");
                         }
-
                     });
                 }
             }
