@@ -5,14 +5,14 @@ define(["jquery", "use!underscore", "use!extjs", "./treeFilter"],
     function ($, _, Ext, treeFilter) {
         //$('input, textarea').placeholder(); // initialize jquery.placeholder
 
-        var Ui = function (container, map, templates) {
+        var Ui = function (plugin, container, map, templates) {
             var _map = map,
                 _container = container,
                 _$templates = $('<div>').append($($.trim(templates))), // store templates in a utility div
                 _$filterInput = null,
                 _$treeContainer = null,
                 _$layerDialog = null,
-                _tree = null,
+                _tree = createTree(),
                 _justClickedItemIcon = false,
                 _justClickedZoomIcon = false,
                 _isRendered = false,
@@ -22,24 +22,33 @@ define(["jquery", "use!underscore", "use!extjs", "./treeFilter"],
             // ------------------------------------------------------------------------
             // Public methods
 
-            this.render = function (rootNode) {
+            this.render = function () {
                 $(_container).empty();
 
-                rootNode = deracinate(rootNode);
-                highlightNewNodes(rootNode);
-                addZoomButtons(rootNode);
-                addDownloadButtons(rootNode);
-                wrapText(rootNode);
-                _tree = createTree(rootNode);
                 _tree.on("checkchange", onCheckboxChanged, this);
                 _tree.on("afteritemexpand", onItemExpanded, this);
                 _tree.on("itemclick", onItemClick, this);
+
+                $('a.pluginLayerSelector-clear', container).click(function() {
+                    plugin.clearAll();
+                    uncheckAndCollapse();
+                });
+
                 removeSpinner();
                 renderUi();
                 _isRendered = true;
                 this.display();
             };
 
+            function addNode(rootNode) {
+                rootNode = deracinate(rootNode);
+                highlightNewNodes(rootNode);
+                addZoomButtons(rootNode);
+                addDownloadButtons(rootNode);
+                wrapText(rootNode);
+                // TODO: Add node to tree
+            }
+            
             this.isRendered = function() {
                 return _isRendered;
             }
@@ -68,7 +77,7 @@ define(["jquery", "use!underscore", "use!extjs", "./treeFilter"],
                 }
             };
 
-            this.uncheckAndCollapse = function () {
+            function uncheckAndCollapse() {
                 _tree.collapseAll();
                 _tree.getRootNode().cascadeBy(function () {
                     if (this.get('checked') === true) {
@@ -182,7 +191,9 @@ define(["jquery", "use!underscore", "use!extjs", "./treeFilter"],
             }());
 
             function setTreeWidthToContainerWidth() {
-                _tree.setWidth($(_container).width());
+                if (_tree) {
+                    _tree.setWidth($(_container).width());
+                }
             }
 
             function addSpinner() {

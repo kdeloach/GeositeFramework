@@ -17,6 +17,7 @@ define([
                 _treeRootNode = null, // the absolute base of the tree
                 _cssClassPrefix = 'pluginLayerSelector',
                 _onLoadingComplete,
+                _onLayerSourceLoaded,
                 _getUniqueFolderTitle = createFnForUniqueFolderTitles();
 
             
@@ -32,10 +33,15 @@ define([
             /*
               Private methods
              */
-            function loadLayerData(layerSourcesJson, onLoadingComplete) {
+             
+            // layerSourcesJson - Layers JSON text
+            // onLayersourceLoaded - Called every time a layer source is done loading
+            // onLoadingComplete - Called when all layer sources are done loading
+            function loadLayerData(layerSourcesJson, onLayersourceLoaded, onLoadingComplete) {
                 var layerData = parseLayerConfigData(layerSourcesJson);
 
                 _onLoadingComplete = onLoadingComplete;
+                _onLayerSourceLoaded = onLayerSourceLoaded;
 
                 if (layerData) {
                     _treeRootNode = makeRootNode();
@@ -66,19 +72,18 @@ define([
                         }
 
                         // validate and load, or raise a schema error
-                        if ((dataSourceContainer.agsSource) && !(dataSourceContainer.agsSource && dataSourceContainer.wmsSource)) {
+                        if (dataSourceContainer.agsSource) {
                             if (source.folderTitle === "") {
                                 sourceRootNode = _treeRootNode;
                             } else {
                                 sourceRootNode = makeContainerNode(source.folderTitle, "folder", _treeRootNode, source);
                             }
                             loadLayerSource(loader, source.url, sourceRootNode, innerContainer);
-                        } else if ((dataSourceContainer.wmsSource) && !(dataSourceContainer.agsSource && dataSourceContainer.wmsSource)) {  
+                        } else if (dataSourceContainer.wmsSource) {
                             loadLayerSource(loader, source.url, _treeRootNode, innerContainer);
-                        } else { 
+                        } else {
                             _app.error("Schema error. Must have a single agsSource or wmsSource in each object.");
                         }
-
                     });
                 }
             }
@@ -135,6 +140,7 @@ define([
                 var i = _.indexOf(_urls, url);
                 if (i != -1) {
                     _urls.splice(i, 1);
+                    _onLayerSourceLoaded(_treeRootNode);
                 }
                 if (_urls.length == 0) {
                     // All URLs are loaded

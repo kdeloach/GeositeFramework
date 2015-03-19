@@ -60,20 +60,25 @@ define([
 
             initialize: function (frameworkParameters) {
                 declare.safeMixin(this, frameworkParameters);
+
+                var self = this;
                 this._layerManager = new LayerManager(this.app);
-                this._ui = new Ui(this.container, this.map, templates);
+                this._ui = new Ui(this, this.container, this.map, templates);
 
                 // Load layer sources, then render UI passing the tree of layer nodes
-                var self = this;
-                this._layerManager.load(this.getLayersJson(), function (tree) {
+                this._layerManager.load(this.getLayersJson(), onLayerSourceLoaded, onLoadingComplete);
+                
+                function onLayerSourceLoaded(tree) {
+                    console.log('onLayerSourceLoaded');
+                }
+
+                function onLoadingComplete(tree) {
+                    console.log('onLoadingComplete');
                     if (self._currentState) {
                         self._layerManager.setServiceState(self._currentState, self.map);
                     }
                     self._ui.render(tree);
-                    $('a.pluginLayerSelector-clear', self.container).click(function() {
-                        self.clearAll();
-                    });
-                });
+                }
             },
 
             getLayersJson: function() {
