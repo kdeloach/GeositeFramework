@@ -69,7 +69,7 @@
         "sample_plugins"
     ],
     "pluginOrder": [
-        "layer_selector",
+        "layer_selector_lite",
         "custom_layer_selector",
         "zoom_to",
         "measure",

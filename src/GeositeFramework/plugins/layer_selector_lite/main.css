@@ -1,0 +1,149 @@
+﻿.pluginLayerSelectorLite-spinner {
+    width: 100%;
+    height: 100%;
+    min-height: 36px;
+    background: url(images/spinner.gif) no-repeat center center;
+}
+
+.pluginLayerSelectorLite-outer {
+    height: 100%;
+    width: 100%;
+    padding-bottom: 58px;  /* reduces inner container's 100% height by search area's height */
+    overflow: visible;
+    }
+
+    .pluginLayerSelectorLite-search {
+        height: 58px;
+        position: relative;
+        width: 100%;
+        padding: 2px 4px 0 4px;
+        }
+        .pluginLayerSelectorLite-search input[type="text"] {
+            margin: 0;
+            width: 100%;
+        }
+        .pluginLayerSelectorLite-clear {
+            padding: 5px 0 0 1px;
+            display: block;
+        }
+
+    .pluginLayerSelectorLite-rest {
+        height: 100%;
+        border-top: 1px solid #EEE;
+        }
+        .pluginLayerSelectorLite-tree-container {
+            height: 100%;
+            overflow: auto;
+            }
+            .pluginLayerSelectorLite-tree-container table {
+                border-width: 0; /* Otherwise there's a light gray border from Foundation*/
+            }
+            .pluginLayerSelectorLite-rest .x-grid-header-hidden .x-grid-body {
+                border: none;
+            }
+
+/* 
+ * Icons for different levels of the "Map Layers" tree 
+ */
+
+.pluginLayerSelectorLite-service .x-tree-icon-parent {
+    background-image:url(images/info-red.png) !important;
+}
+
+.pluginLayerSelectorLite-service .x-tree-icon-leaf {
+    background-image:url(images/info-red.png) !important;
+}
+
+
+.pluginLayerSelectorLite-layer-group .x-tree-icon-parent {
+    background-image:url(images/layers.png) !important;
+}
+
+.pluginLayerSelectorLite-layer .x-tree-icon {
+    background-image:url(images/info-blue.png);
+}
+
+.pluginLayer-download,
+.pluginLayer-extent-zoom {
+    background-image:url(images/zoom_in.png);
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    position: relative;
+    top: 2px;
+    left: 2px;
+}
+.pluginLayer-download { background-image: url(images/download.png); }
+
+.pluginLayerSelectorLite-new div {
+    font-weight: bold;
+}
+    .pluginLayerSelectorLite-new .text {
+        background: url(images/new.png) 0 50% no-repeat;
+        padding-left: 25px;
+    }
+
+/* 
+ * Layer info box 
+ */
+
+.pluginLayerSelectorLite-info-box {
+    position: absolute; 
+}
+
+.pluginLayerSelectorLite-info-box .body {
+    width: 300px;
+    max-height: 400px;
+    background: #fff;
+    border: 5px solid gray;
+    border-radius: 5px;
+    padding: 10px 10px 0 10px;
+    overflow: auto;
+}
+
+.pluginLayerSelectorLite-info-box .close {
+    position: absolute;
+    top: 7px;
+    right: 7px;
+    cursor: pointer;
+    padding: 6px;
+    background: #FFF;
+    border-radius: 4px;
+    color: #CCC;
+    font-weight: 700;
+    z-index: 99;
+    height: 24px;
+    line-height: 10px;
+    width: 24px;
+    font-size: 14px;
+}
+.pluginLayerSelectorLite-info-box .close:hover {
+    background: #F1F2F2;
+    color: #333;
+}
+
+.pluginLayerSelectorLite-info-box .info-label {
+    font-weight: bold;
+    padding-bottom: 3px;
+}
+
+.pluginLayerSelectorLite-info-box .info-value {
+    padding-bottom: 10px;
+}
+
+/* Neutralize Foundation's zealous table styling so the slider won't look terrible */
+.pluginLayerSelectorLite-info-box table {
+    background-color: transparent;
+    border-width: 0;
+    margin: 0;
+}
+
+.pluginLayerSelectorLite-info-box td {
+    padding: 0;
+}
+
+.pluginLayerSelectorLite-rest .x-grid-row .x-grid-cell,
+.pluginLayerSelectorLite-rest .x-grid-row .x-grid-cell-inner {
+    font-size: 13px;
+    font-family: 'Archivo Narrow', 'Arial Narrow', Helvetica, sans-serif;
+}
