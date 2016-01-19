@@ -1,4 +1,4 @@
-
+﻿
 define(["jquery",
         "use!underscore",
         "esri/geometry/Polyline",
